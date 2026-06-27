@@ -21,7 +21,7 @@ function Health() {
       const token = localStorage.getItem("token");
 
       const res = await axios.get(
-        "http://localhost:5000/api/health",
+        "https://lifetrack-e2sm.onrender.com/api/health",
         {
           headers: {
             Authorization: `Bearer ${token}`,
