@@ -142,7 +142,7 @@ function Sidebar() {
             </h3>
 
             <p className="text-sm text-slate-500">
-              Student
+              {user.email}
             </p>
 
           </div>

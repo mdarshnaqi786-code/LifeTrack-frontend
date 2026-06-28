@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { FiEye, FiEyeOff } from "react-icons/fi";
 import axios from "axios";
 
 import DashboardLayout from "../../layouts/DashboardLayout";
@@ -17,6 +18,9 @@ function Profile() {
   });
 
   const [loading, setLoading] = useState(false);
+  const [showCurrentPassword, setShowCurrentPassword] = useState(false);
+const [showNewPassword, setShowNewPassword] = useState(false);
+const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   // Fetch Profile
 
@@ -400,15 +404,34 @@ function Profile() {
               Current Password
             </label>
 
-            <input
-              type="password"
-              name="currentPassword"
-              value={password.currentPassword}
-              onChange={handlePasswordChange}
-              placeholder="Enter current password"
-              className="border rounded-xl p-3 w-full mt-2"
-            />
+            <div className="relative">
 
+  <input
+    type={showCurrentPassword ? "text" : "password"}
+    name="currentPassword"
+    value={password.currentPassword}
+    onChange={handlePasswordChange}
+    placeholder="Enter current password"
+    className="border rounded-xl p-3 pr-12 w-full mt-2"
+  />
+
+  <button
+    type="button"
+    onClick={() =>
+      setShowCurrentPassword(!showCurrentPassword)
+    }
+    className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 hover:text-blue-600"
+  >
+
+    {showCurrentPassword ? (
+      <FiEyeOff size={20} />
+    ) : (
+      <FiEye size={20} />
+    )}
+
+  </button>
+
+</div>
           </div>
 
           <div>
@@ -417,14 +440,34 @@ function Profile() {
               New Password
             </label>
 
-            <input
-              type="password"
-              name="newPassword"
-              value={password.newPassword}
-              onChange={handlePasswordChange}
-              placeholder="Enter new password"
-              className="border rounded-xl p-3 w-full mt-2"
-            />
+            <div className="relative">
+
+  <input
+    type={showNewPassword ? "text" : "password"}
+    name="newPassword"
+    value={password.newPassword}
+    onChange={handlePasswordChange}
+    placeholder="Enter new password"
+    className="border rounded-xl p-3 pr-12 w-full mt-2"
+  />
+
+  <button
+    type="button"
+    onClick={() =>
+      setShowNewPassword(!showNewPassword)
+    }
+    className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 hover:text-blue-600"
+  >
+
+    {showNewPassword ? (
+      <FiEyeOff size={20} />
+    ) : (
+      <FiEye size={20} />
+    )}
+
+  </button>
+
+</div>
 
           </div>
 
@@ -434,15 +477,34 @@ function Profile() {
               Confirm Password
             </label>
 
-            <input
-              type="password"
-              name="confirmPassword"
-              value={password.confirmPassword}
-              onChange={handlePasswordChange}
-              placeholder="Confirm new password"
-              className="border rounded-xl p-3 w-full mt-2"
-            />
+           <div className="relative">
 
+  <input
+    type={showConfirmPassword ? "text" : "password"}
+    name="confirmPassword"
+    value={password.confirmPassword}
+    onChange={handlePasswordChange}
+    placeholder="Confirm new password"
+    className="border rounded-xl p-3 pr-12 w-full mt-2"
+  />
+
+  <button
+    type="button"
+    onClick={() =>
+      setShowConfirmPassword(!showConfirmPassword)
+    }
+    className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 hover:text-blue-600"
+  >
+
+    {showConfirmPassword ? (
+      <FiEyeOff size={20} />
+    ) : (
+      <FiEye size={20} />
+    )}
+
+  </button>
+
+</div>
           </div>
 
         </div>

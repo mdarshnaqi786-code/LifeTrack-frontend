@@ -1,11 +1,13 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { FiEye, FiEyeOff } from "react-icons/fi";
 import axios from "axios";
 import logo from "../../assets/Logo.png";
 
 function Login() {
 
   const navigate = useNavigate();
+  const [showPassword, setShowPassword] = useState(false);
 
   const [form, setForm] = useState({
     email: "",
@@ -129,14 +131,26 @@ function Login() {
                 Password
               </label>
 
-              <input
-                type="password"
-                name="password"
-                value={form.password}
-                onChange={handleChange}
-                placeholder="Enter your password"
-                className="w-full border border-slate-300 rounded-xl p-3 outline-none focus:border-blue-600"
-              />
+              <div className="relative">
+
+  <input
+    type={showPassword ? "text" : "password"}
+    name="password"
+    value={form.password}
+    onChange={handleChange}
+    placeholder="Enter your password"
+    className="w-full border border-slate-300 rounded-xl p-3 pr-12 outline-none focus:border-blue-600"
+  />
+
+  <button
+    type="button"
+    onClick={() => setShowPassword(!showPassword)}
+    className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 hover:text-blue-600"
+  >
+    {showPassword ? <FiEyeOff size={20} /> : <FiEye size={20} />}
+  </button>
+
+</div>
             </div>
                         <button
               type="submit"

@@ -1,55 +1,30 @@
-import { FiSearch } from "react-icons/fi";
-import { MdNotificationsNone } from "react-icons/md";
+import { useNavigate } from "react-router-dom";
 
 function Navbar() {
+  const navigate = useNavigate();
 
-  const user =
-    JSON.parse(localStorage.getItem("user")) || {};
+  const user = JSON.parse(localStorage.getItem("user")) || {};
 
-  const firstLetter =
-    user.fullname
-      ? user.fullname.charAt(0).toUpperCase()
-      : "U";
-        return (
+  const firstLetter = user.fullname
+    ? user.fullname.charAt(0).toUpperCase()
+    : "U";
 
-    <header className="h-20 bg-white border-b border-slate-200 flex items-center px-10">
-
-
-      {/* Left */}
-
-     
-
-      {/* Right */}
-
-       <div className="flex items-center justify-end w-full gap-6">
-
-        
-
-        {/* Profile */}
-
-        <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 rounded-full bg-blue-600 flex items-center justify-center text-white font-bold text-lg">
-
-            {firstLetter}
-
-          </div>
-
-          <div>
-
-            <h3 className="font-semibold text-slate-800">
-              {user.fullname || "User"}
-            </h3>
-            
-          </div>
-
-        </div>
-
-      </div>
-
+  return (
+    <header className="h-20 bg-white border-b border-slate-200 flex items-center justify-end px-10">
+      <button
+        onClick={() => navigate("/profile")}
+        className="w-12 h-12 rounded-full bg-blue-600 text-white
+                   flex items-center justify-center
+                   font-bold text-lg
+                   hover:bg-blue-700
+                   transition-all duration-300
+                   shadow-md"
+        title="My Profile"
+      >
+        {firstLetter}
+      </button>
     </header>
-
   );
-
 }
 
 export default Navbar;
