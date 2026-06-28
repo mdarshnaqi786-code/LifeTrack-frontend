@@ -7,6 +7,7 @@ import Todo from "./pages/Todo/Todo";
 import Notes from "./pages/Notes/Notes";
 import Expenses from "./pages/Expenses/Expenses";
 import Health from "./pages/Health/Health";
+import Profile from "./pages/Profile/Profile";
 
 function App() {
   return (
@@ -26,6 +27,8 @@ function App() {
         <Route path="/expenses" element={<Expenses />} />
 
         <Route path="/health" element={<Health />} />
+
+        <Route path="/profile" element={<Profile />} />
 
       </Routes>
     </BrowserRouter>

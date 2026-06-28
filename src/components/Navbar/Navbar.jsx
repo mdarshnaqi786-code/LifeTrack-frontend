@@ -39,11 +39,7 @@ function Navbar() {
             <h3 className="font-semibold text-slate-800">
               {user.fullname || "User"}
             </h3>
-
-            <p className="text-sm text-slate-500">
-              Student
-            </p>
-
+            
           </div>
 
         </div>

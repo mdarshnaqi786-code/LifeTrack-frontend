@@ -3,10 +3,9 @@ import axios from "axios";
 import DashboardLayout from "../../layouts/DashboardLayout";
 import { FiRefreshCw, FiSave } from "react-icons/fi";
 
-      
 function Health() {
 
-  const [recordId, setRecordId] = useState(null);
+  const [history, setHistory] = useState([]);
 
   const [height, setHeight] = useState(170);
   const [weight, setWeight] = useState(68);
@@ -15,6 +14,7 @@ function Health() {
   const [exercise, setExercise] = useState("");
   const [medicine, setMedicine] = useState("");
 
+  // Fetch Health Records
   const fetchHealth = async () => {
 
     try {
@@ -30,17 +30,18 @@ function Health() {
         }
       );
 
+      setHistory(res.data);
+
       if (res.data.length > 0) {
 
-        const health = res.data[0];
+        const latest = res.data[0];
 
-        setRecordId(health._id);
-        setHeight(health.height);
-        setWeight(health.weight);
-        setWater(health.waterIntake);
-        setSleep(health.sleepHours);
-        setExercise(health.exercise);
-        setMedicine(health.medicine);
+        setHeight(latest.height);
+        setWeight(latest.weight);
+        setWater(latest.waterIntake);
+        setSleep(latest.sleepHours);
+        setExercise(latest.exercise);
+        setMedicine(latest.medicine);
 
       }
 
@@ -58,6 +59,7 @@ function Health() {
 
   }, []);
 
+  // BMI Calculation
   const bmi =
     height && weight
       ? (
@@ -95,6 +97,7 @@ function Health() {
     bmiColor = "bg-slate-500";
 
   }
+  // Reset Form
 
   const resetData = () => {
 
@@ -106,7 +109,7 @@ function Health() {
     setMedicine("");
 
   };
-
+  // Save Health Record
   const saveData = async () => {
 
     const token = localStorage.getItem("token");
@@ -124,41 +127,19 @@ function Health() {
 
     try {
 
-      if (recordId) {
+      await axios.post(
 
-        await axios.put(
+        "https://lifetrack-e2sm.onrender.com/api/health",
 
-          `https://lifetrack-e2sm.onrender.com/api/health/${recordId}`,
+        data,
 
-          data,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
 
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-
-        );
-
-      } else {
-
-        const res = await axios.post(
-
-          "https://lifetrack-e2sm.onrender.com/api/health",
-
-          data,
-
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-
-        );
-
-        setRecordId(res.data._id);
-
-      }
+      );
 
       alert("Health details saved successfully!");
 
@@ -168,16 +149,17 @@ function Health() {
 
       console.log(err);
 
-      console.log(err.response);
-
-      console.log(err.response?.data);
-
-      alert(err.response?.data?.message || "Something went wrong");
+      alert(
+        err.response?.data?.message ||
+        "Something went wrong"
+      );
 
     }
 
   };
-    return (
+
+  return (
+
     <DashboardLayout>
 
       <h1 className="text-4xl font-bold mb-8">
@@ -191,6 +173,7 @@ function Health() {
         <div
           className={`${bmiColor} text-white rounded-2xl p-8 shadow-lg transition-all duration-500`}
         >
+
           <p className="text-lg font-medium">
             BMI
           </p>
@@ -242,8 +225,7 @@ function Health() {
         </div>
 
       </div>
-
-      {/* Form */}
+            {/* Health Form */}
 
       <div className="bg-white rounded-2xl shadow-lg p-8">
 
@@ -252,7 +234,8 @@ function Health() {
         </h2>
 
         <div className="grid md:grid-cols-2 gap-6">
-                    <div>
+
+          <div>
 
             <label className="font-semibold">
               Height (cm)
@@ -360,7 +343,8 @@ function Health() {
         </div>
 
         <div className="flex justify-end gap-4 mt-8">
-                    <button
+
+          <button
             onClick={resetData}
             className="flex items-center gap-2 bg-red-500 hover:bg-red-600 text-white px-6 py-3 rounded-xl"
           >
@@ -379,9 +363,190 @@ function Health() {
         </div>
 
       </div>
+            {/*Health History*/}
 
-    </DashboardLayout>
+      <div className="bg-white rounded-2xl shadow-lg p-8 mt-8">
+
+        <div className="flex items-center justify-between mb-8">
+
+          <h2 className="text-2xl font-bold">
+            Health History
+          </h2>
+
+          <span className="bg-blue-100 text-blue-700 px-4 py-2 rounded-full font-semibold">
+
+            {history.length} Records
+
+          </span>
+
+        </div>
+
+        {
+
+          history.length === 0 ? (
+
+            <div className="text-center py-12">
+
+              <p className="text-gray-500 text-lg">
+                No health records available.
+              </p>
+
+            </div>
+
+          ) : (
+
+            <div className="space-y-6">
+
+              {
+
+                history.map((item) => {
+
+                  const itemBMI = (
+
+                    item.weight /
+
+                    ((item.height / 100) * (item.height / 100))
+
+                  ).toFixed(1);
+
+                  return (
+
+                    <div
+                      key={item._id}
+                      className="border border-slate-200 rounded-2xl p-6 hover:shadow-lg transition-all duration-300"
+                    >
+
+                      {/* Header */}
+
+                      <div className="flex justify-between items-center mb-6">
+
+                        <div>
+
+                          <h3 className="text-xl font-bold text-slate-800">
+                            Health Record
+                          </h3>
+
+                          <p className="text-slate-500">
+
+                            📅 {new Date(item.createdAt).toLocaleDateString()}
+
+                            &nbsp;&nbsp;
+
+                            🕒 {new Date(item.createdAt).toLocaleTimeString()}
+
+                          </p>
+
+                        </div>
+
+                        <div className="bg-green-100 text-green-700 px-5 py-2 rounded-full font-bold">
+
+                          BMI : {itemBMI}
+
+                        </div>
+
+                      </div>
+
+                      {/* Details */}
+
+                      <div className="grid grid-cols-2 md:grid-cols-4 gap-5">
+
+                        <div className="bg-slate-50 rounded-xl p-4">
+
+                          <p className="text-gray-500 text-sm">
+                            Height
+                          </p>
+
+                          <h3 className="text-xl font-bold">
+                            {item.height} cm
+                          </h3>
+
+                        </div>
+
+                        <div className="bg-slate-50 rounded-xl p-4">
+
+                          <p className="text-gray-500 text-sm">
+                            Weight
+                          </p>
+
+                          <h3 className="text-xl font-bold">
+                            {item.weight} kg
+                          </h3>
+
+                        </div>
+
+                        <div className="bg-slate-50 rounded-xl p-4">
+
+                          <p className="text-gray-500 text-sm">
+                            Water Intake
+                          </p>
+
+                          <h3 className="text-xl font-bold">
+                            {item.waterIntake} L
+                          </h3>
+
+                        </div>
+
+                        <div className="bg-slate-50 rounded-xl p-4">
+
+                          <p className="text-gray-500 text-sm">
+                            Sleep
+                          </p>
+
+                          <h3 className="text-xl font-bold">
+                            {item.sleepHours} hrs
+                          </h3>
+
+                        </div>
+
+                        <div className="bg-slate-50 rounded-xl p-4">
+
+                          <p className="text-gray-500 text-sm">
+                            Exercise
+                          </p>
+
+                          <h3 className="text-lg font-semibold">
+
+                            {item.exercise || "None"}
+
+                          </h3>
+
+                        </div>
+
+                        <div className="bg-slate-50 rounded-xl p-4">
+
+                          <p className="text-gray-500 text-sm">
+                            Medicine
+                          </p>
+
+                          <h3 className="text-lg font-semibold">
+
+                            {item.medicine || "None"}
+
+                          </h3>
+
+                        </div>
+
+                      </div>
+
+                    </div>
+
+                  );
+
+                })
+
+              }
+
+            </div>
+
+          )
+
+        }
+
+      </div>
+          </DashboardLayout>
+
   );
+
 }
 
 export default Health;

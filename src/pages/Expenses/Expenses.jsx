@@ -95,7 +95,7 @@ function Expenses() {
       if (editId) {
 
         await axios.put(
-          `http://localhost:5000/api/expenses/${editId}`,
+          `https://lifetrack-e2sm.onrender.com/api/expenses/${editId}`,
           form,
           {
             headers: {
@@ -109,7 +109,7 @@ function Expenses() {
       } else {
 
         await axios.post(
-          "http://localhost:5000/api/expenses",
+          "https://lifetrack-e2sm.onrender.com/api/expenses",
           form,
           {
             headers: {
@@ -172,7 +172,7 @@ function Expenses() {
     try {
 
       await axios.delete(
-        `http://localhost:5000/api/expenses/${id}`,
+        `https://lifetrack-e2sm.onrender.com/api/expenses/${id}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,

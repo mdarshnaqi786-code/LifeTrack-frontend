@@ -8,6 +8,7 @@ import {
 } from "react-icons/md";
 
 import { NavLink } from "react-router-dom";
+import { MdPerson } from "react-icons/md";
 
 import logo from "../../assets/Logo.png";
 
@@ -47,6 +48,12 @@ function Sidebar() {
       path: "/health",
       icon: <MdHealthAndSafety size={22} />,
     },
+    {
+    name: "Profile",
+    path: "/profile",
+    icon: <MdPerson size={22} />,
+  },
+
   ];
     return (
 
