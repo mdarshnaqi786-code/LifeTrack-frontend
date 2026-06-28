@@ -214,8 +214,6 @@ function Register() {
     </button>
 
   </div>
-
-</div>
             </div>
                         <button
               type="submit"
